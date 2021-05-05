@@ -10,7 +10,11 @@ services:
             - app-network
         volumes:
             - ./node:/usr/src/app
-
+            - /usr/src/app/node_modules
+        restart: always
+        depends_on: 
+            - db
+        entrypoint: [ "node", "index.js", dockerize -wait tcp://db:3306 -timeout 20s docker-entrypoint.sh ]
     db:
         image: mysql:5.7
         command: --innodb-use-native-aio=0
@@ -39,6 +43,9 @@ services:
             - app-network
         ports: 
             - "8080:80"
+        restart: always
+        depends_on: 
+            - app
         
 networks: 
     app-network:

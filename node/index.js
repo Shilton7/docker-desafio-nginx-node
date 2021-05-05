@@ -10,6 +10,15 @@ app.set('views','views');
 
 app.get('/', (req, res) => {
 
+    const createTable = `CREATE TABLE people ( id int(11) NOT NULL AUTO_INCREMENT, 
+                                              name varchar(155) DEFAULT NULL, 
+                                              PRIMARY KEY (id) ) 
+                                              ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1`;
+
+    connection.query(createTable, function(err, results, fields) {
+        if (err) console.log(err.message);
+    });
+
     const people = { name: 'Shilton'}
     connection.query('INSERT INTO `people` SET ?', people, (err) => {
         if (err) throw err;
